@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charlie Hall · Portfolio</title>
+<meta name="description" content="Charlie Hall: games and software developer. Unity, C#, JavaScript, TypeScript and Python projects, each with automated tests.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 shape-rendering=%27crispEdges%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%2312161C%27/%3E%3Cpath d=%27M4 4h5v2H6v4h3v2H4z M10 4h2v8h-2z%27 fill=%27%23FFB01F%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #12161C; --muted: #505A66; --line: #DDE1E7;
+  --accent: #B36B00; --accent-soft: #FFF3DC; --link: #1D4F91;
+  --hero: #12161C; --hero-ink: #F4F6F8; --hero-muted: #A9B3BE; --amber: #FFB01F;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1217; --surface: #161C23; --ink: #EDF1F5; --muted: #A3ADB8; --line: #27303A;
+    --accent: #FFC65A; --accent-soft: #2A2214; --link: #8DB8F2;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1217; --surface: #161C23; --ink: #EDF1F5; --muted: #A3ADB8; --line: #27303A;
+  --accent: #FFC65A; --accent-soft: #2A2214; --link: #8DB8F2;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 17px/1.6 'Inter', Arial, sans-serif; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--link); }
+h1, h2, h3 { line-height: 1.15; margin: 0 0 .5em; font-weight: 800; letter-spacing: -0.015em; }
+h2 { font-size: clamp(28px, 4vw, 40px); }
+h3 { font-size: 22px; margin-bottom: .25em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+section { padding: 72px 0; }
+.eyebrow { font-family: 'Silkscreen', monospace; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+
+/* Top bar */
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--hero) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid #222A33; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+.top .name { color: var(--hero-ink); font-weight: 800; text-decoration: none; white-space: nowrap; }
+.top nav { display: flex; gap: 20px; }
+.top nav a { color: var(--hero-muted); text-decoration: none; font-size: 15px; font-weight: 600; }
+.top nav a:hover { color: var(--amber); }
+@media (max-width: 520px) { .top nav { gap: 14px; } .top nav a { font-size: 14px; } }
+
+/* Hero */
+.hero { background: var(--hero); color: var(--hero-ink); padding: 88px 0 80px; position: relative; overflow: hidden;
+  background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+  background-size: 24px 24px; }
+.hero .eyebrow { color: var(--amber); }
+.hero h1 { font-size: clamp(44px, 8vw, 84px); margin: 0 0 18px; }
+.hero .lead { color: var(--hero-muted); font-size: clamp(18px, 2.3vw, 22px); max-width: 720px; margin: 0 0 32px; }
+.hero .lead strong { color: var(--hero-ink); font-weight: 700; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 16px; }
+.btn.primary { background: var(--amber); color: #12161C; }
+.btn.ghost { border: 2px solid #36414D; color: var(--hero-ink); }
+.btn.ghost:hover { border-color: var(--amber); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 16px; margin-top: 56px; }
+.facts div { border-left: 3px solid var(--amber); padding: 2px 0 2px 14px; }
+.facts b { display: block; font-size: 17px; color: var(--hero-ink); }
+.facts span { color: var(--hero-muted); font-size: 15px; }
+
+/* Projects */
+.intro { max-width: 720px; color: var(--muted); margin: 0 0 36px; font-size: 18px; }
+.projects { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+.card > a.shot { display: block; aspect-ratio: 16 / 10; background: #0B0E12; overflow: hidden; }
+.card > a.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.card > a.shot:hover img { transform: scale(1.03); }
+.card img.pixel { image-rendering: pixelated; }
+.card .body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+.card .meta { color: var(--muted); font-size: 14px; font-weight: 600; margin: 0 0 12px; }
+.card p { margin: 0 0 14px; }
+.checked { background: var(--accent-soft); border-radius: 10px; padding: 12px 14px; margin: 0 0 16px; font-size: 15.5px; }
+.checked b { font-family: 'Silkscreen', monospace; font-weight: 400; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 2px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; padding: 0; list-style: none; }
+.tags li { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
+.links a { font-weight: 700; font-size: 15px; text-decoration: none; padding: 9px 14px; border-radius: 9px; border: 1.5px solid var(--line); color: var(--ink); }
+.links a.play { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.links a:hover { border-color: var(--accent); }
+.links .note { font-size: 13px; color: var(--muted); align-self: center; }
+
+/* Skills */
+.alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.skills { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); }
+.skills div { border: 1px solid var(--line); border-radius: 14px; padding: 20px; background: var(--bg); }
+.skills h3 { font-size: 18px; }
+.skills ul { margin: 0; padding-left: 1.1em; color: var(--muted); }
+.skills li { margin-bottom: .35em; }
+
+/* About and experience */
+.two { display: grid; gap: 40px; grid-template-columns: 1fr; }
+@media (min-width: 880px) { .two { grid-template-columns: 5fr 6fr; } }
+.about p { margin: 0 0 1em; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: grid; grid-template-columns: 128px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.timeline li:first-child { padding-top: 0; }
+.timeline .when { color: var(--muted); font-size: 14px; font-weight: 600; padding-top: 2px; }
+.timeline b { display: block; }
+.timeline span { color: var(--muted); font-size: 15px; }
+@media (max-width: 520px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
+.label { font-family: 'Silkscreen', monospace; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 28px 0 12px; }
+.label:first-child { margin-top: 0; }
+
+/* Contact */
+.contact { background: var(--hero); color: var(--hero-ink); text-align: center; }
+.contact .eyebrow { color: var(--amber); }
+.contact p { color: var(--hero-muted); max-width: 560px; margin: 0 auto 28px; font-size: 18px; }
+.contact .btns { justify-content: center; }
+footer { background: var(--hero); color: #7D8894; font-size: 13px; padding: 0 0 32px; text-align: center; }
+footer .wrap { border-top: 1px solid #222A33; padding-top: 24px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="name" href="#">Charlie Hall</a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Games &amp; software developer</p>
+    <h1>Charlie Hall</h1>
+    <p class="lead">I build games and training tools in <strong>Unity, C#, JavaScript and Python</strong>, and I make sure they work: every project here comes with automated tests, test bots or simulations that prove it behaves as designed.</p>
+    <div class="btns">
+      <a class="btn primary" href="#work">See my work</a>
+      <a class="btn ghost" href="mailto:Charliehall1999@gmail.com">Email me</a>
+      <a class="btn ghost" href="https://github.com/Charliehall10">GitHub</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/charliehall20">LinkedIn</a>
+    </div>
+    <div class="facts">
+      <div><b>MSc &amp; BSc Creative Computing</b><span>Bath Spa University (Gaming pathway)</span></div>
+      <div><b>5 playable demos</b><span>All run in the browser, no install</span></div>
+      <div><b>Testing built in</b><span>Unit tests, test bots and simulators</span></div>
+      <div><b>Herefordshire, UK</b><span>Happy to relocate</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+<section id="work">
+  <div class="wrap">
+    <p class="eyebrow">Selected work</p>
+    <h2>Projects</h2>
+    <p class="intro">All five run right here in your browser, no install needed. The highlighted box on each card shows how I checked it works.</p>
+
+    <div class="projects">
+
+      <article class="card">
+        <a class="shot" href="https://charliehall10.github.io/specimen-hunter/"><img src="media/specimen-hunter.jpg" alt="Specimen Hunter: reels showing carp, bait tins and a catapult, with the free spins panel" loading="lazy" width="1200" height="750"></a>
+        <div class="body">
+          <h3>Specimen Hunter</h3>
+          <p class="meta">Browser game with its own game server · 2026</p>
+          <p>An original British carp-fishing slot game (5 reels, 10 lines) with free spins, baited swims and a kingfisher bonus. It has its own game server with sessions, stake limits and round history, and also ships as a Linux desktop app.</p>
+          <div class="checked"><b>How I checked it</b>Automated tests cover the game engine and the server API. A Python simulator played 500 million rounds to confirm the game pays out as designed (96.16% return to player), and the JavaScript engine is checked against it.</div>
+          <ul class="tags"><li>JavaScript</li><li>PixiJS</li><li>Node.js</li><li>Python</li><li>Electron</li></ul>
+          <div class="links">
+            <a class="play" href="https://charliehall10.github.io/specimen-hunter/play/">▶ Play demo</a>
+            <a href="https://charliehall10.github.io/specimen-hunter/">Case study</a>
+            <a href="https://github.com/Charliehall10/specimen-hunter-source">Source</a>
+            <span class="note">Demo money only · 18+</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="daily-check-vr/"><img src="media/daily-check-vr.jpg" alt="Daily Check VR: a blue articulated lorry with a curtainsider trailer in a yard" loading="lazy" width="1200" height="750"></a>
+        <div class="body">
+          <h3>Daily Check VR</h3>
+          <p class="meta">HGV driver training · Unity 6 · desktop, browser and VR · 2026</p>
+          <p>A trainer for the daily walkaround check every lorry driver must do. Walk round an articulated lorry, inspect all 21 DVSA checks, judge each defect as minor or dangerous, then file a defect report and get scored. Training mode teaches; Assessment mode plants random defects with no hints.</p>
+          <div class="checked"><b>How I checked it</b>A built-in test mode plants every defect at once and screenshots every check close-up, the report and the results, so I can review the whole lorry after every change.</div>
+          <ul class="tags"><li>Unity 6</li><li>C#</li><li>OpenXR</li><li>WebGL</li></ul>
+          <div class="links">
+            <a class="play" href="daily-check-vr/play/">▶ Try it</a>
+            <a href="daily-check-vr/">Case study &amp; video</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="https://charliehall10.github.io/extinction-dash/"><img class="pixel" src="media/extinction-dash.png" alt="Extinction Dash: a pixel-art dinosaur running past a volcano under a falling meteor" loading="lazy" width="1200" height="750"></a>
+        <div class="body">
+          <h3>Extinction Dash</h3>
+          <p class="meta">One-button runner · Unity 6 · 2026</p>
+          <p>A pixel-art dinosaur runner across five levels, each faster than the last, ending under a giant meteor. Amber combos raise your multiplier and trigger a Stampede. All art and sound are generated in code, and the levels are built so spacing stays fair as the speed climbs.</p>
+          <div class="checked"><b>How I checked it</b>A test bot plays through all five levels to confirm each one can be completed.</div>
+          <ul class="tags"><li>Unity 6</li><li>C#</li><li>Level design</li><li>WebGL</li></ul>
+          <div class="links">
+            <a class="play" href="https://charliehall10.github.io/extinction-dash/play/">▶ Play</a>
+            <a href="https://charliehall10.github.io/extinction-dash/">Case study</a>
+            <a href="https://github.com/Charliehall10/extinction-dash">Source</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="tick-lab/"><img src="media/tick-lab.jpg" alt="Tick Lab: a lesson panel beside a pixel-art fishing spot, inventory and tick timeline" loading="lazy" width="1200" height="750"></a>
+        <div class="body">
+          <h3>Tick Lab</h3>
+          <p class="meta">Browser trainer · TypeScript · 2026</p>
+          <p>A trainer for “tick manipulation”, a set of precise click rhythms in Old School RuneScape. It recreates the game's 600 ms server tick and network delay, and a coach explains exactly which tick each click landed on and why a roll was lost.</p>
+          <div class="checked"><b>How I checked it</b>32 automated tests replay a community guide's tick-by-tick examples, and a bot follows each lesson for 300 ticks to confirm the perfect rhythm comes out.</div>
+          <ul class="tags"><li>TypeScript</li><li>Vite</li><li>Canvas 2D</li><li>Vitest</li></ul>
+          <div class="links">
+            <a class="play" href="tick-lab/">▶ Try it</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="space-adventure/"><img src="media/space-adventure.jpg" alt="Space Adventure title screen: an astronaut and a rocket under the game's logo" loading="lazy" width="1200" height="750"></a>
+        <div class="body">
+          <h3>Space Adventure</h3>
+          <p class="meta">2D platformer · Unity · first-year university project (2019), remastered 2026</p>
+          <p>My first-year game at Bath Spa, rebuilt as a complete short game: five levels, one rocket part each, ending in a three-phase boss fight. It keeps the original 2019 art and adds wall jumps, moving platforms, checkpoints, a results screen and chiptune music.</p>
+          <div class="checked"><b>How I checked it</b>The levels are written in a Python level-design tool that simulates the player's jump physics, to prove every level can be finished and every star reached. A self-test mode checks the real game matches.</div>
+          <ul class="tags"><li>Unity</li><li>C#</li><li>Python</li><li>Level design</li></ul>
+          <div class="links">
+            <a class="play" href="space-adventure/">▶ Play</a>
+            <span class="note">Keyboard: A/D, W, left click</span>
+          </div>
+        </div>
+      </article>
+
+
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Toolkit</p>
+    <h2>Skills</h2>
+    <div class="skills">
+      <div>
+        <h3>Programming</h3>
+        <ul><li>C# with Unity (throughout both degrees)</li><li>JavaScript and TypeScript</li><li>Python</li><li>HTML and CSS</li></ul>
+      </div>
+      <div>
+        <h3>Testing</h3>
+        <ul><li>Automated unit and API tests</li><li>Test bots that play the game</li><li>Simulation to check maths and balance</li><li>Regression testing after every fix</li></ul>
+      </div>
+      <div>
+        <h3>Game design</h3>
+        <ul><li>Level design and difficulty curves</li><li>Bonus features and game balance</li><li>Training and assessment flows</li><li>Pixel art and sound made in code</li></ul>
+      </div>
+      <div>
+        <h3>Tools &amp; ways of working</h3>
+        <ul><li>Git and GitHub</li><li>Linux, my everyday system</li><li>Jira and Trello for tasks and bugs</li><li>Development logs and documentation</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap two">
+    <div class="about">
+      <p class="eyebrow">About me</p>
+      <h2>Methodical, and I like knowing why things break</h2>
+      <p>I studied Creative Computing at Bath Spa University, a BSc on the Gaming pathway followed by an MSc, where I designed and built games in Unity and C#. The MSc included a Creative Leadership module on planning and leading creative projects.</p>
+      <p>The part of building software I enjoy most is proving it works: writing tests, building bots that play my levels, and running simulations to check the numbers add up.</p>
+      <p>Alongside that I've spent years in customer-facing and team roles. At Carphone Warehouse I diagnosed customers' device and account problems; at Waitrose and British Wool I trained new colleagues. I communicate clearly, take feedback well and pick things up quickly.</p>
+    </div>
+    <div>
+      <p class="label">Education</p>
+      <ul class="timeline">
+        <li><span class="when">2021 – 2022</span><div><b>MSc Creative Computing</b><span>Bath Spa University</span></div></li>
+        <li><span class="when">2018 – 2021</span><div><b>BSc (Hons) Creative Computing (Gaming)</b><span>Bath Spa University</span></div></li>
+        <li><span class="when">A levels</span><div><b>IT (Distinction*), Business, Psychology</b><span>Hereford Sixth Form College</span></div></li>
+      </ul>
+      <p class="label">Experience</p>
+      <ul class="timeline">
+        <li><span class="when">2024 – 2026</span><div><b>Warehouse Operative · British Wool</b><span>Invited back for a second season. Data entry and stock records; trained staff on specialist machinery.</span></div></li>
+        <li><span class="when">2025</span><div><b>Career break: travel</b><span>Japan, Australia, Bali, Thailand, Macau, Hong Kong and China.</span></div></li>
+        <li><span class="when">2024</span><div><b>Production Operative · Polytech</b><span>Made precision automotive components to client specifications.</span></div></li>
+        <li><span class="when">2022 – 2024</span><div><b>Delivery Driver &amp; Supermarket Assistant · Waitrose &amp; Partners</b><span>Managed delivery manifests and trained new team members.</span></div></li>
+        <li><span class="when">2019 – 2022</span><div><b>Customer Consultant · Carphone Warehouse</b><span>Diagnosed and fixed customers' device and account problems.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <p class="eyebrow">Get in touch</p>
+    <h2>Let's talk</h2>
+    <p>I'm looking for my first role in games or software. I'd be glad to walk you through any of these projects.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:Charliehall1999@gmail.com">Charliehall1999@gmail.com</a>
+      <a class="btn ghost" href="https://github.com/Charliehall10">GitHub</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/charliehall20">LinkedIn</a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">© 2026 Charlie Hall · Tick Lab is a fan project and is not affiliated with Jagex. Old School RuneScape is a trademark of Jagex Limited.</div>
+</footer>
+
+</body>
+</html>

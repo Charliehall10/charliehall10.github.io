@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tick Lab</title>
+    <meta name="description" content="Practise tick-perfect skilling methods in your browser, with a coach that shows exactly which tick each click landed on." />
+    <link rel="icon" href="data:," />
+    <script type="module" crossorigin src="./assets/index-B5nQBmZQ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CwmlR3Nm.css">
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="#" aria-label="Tick Lab home">
+        <canvas id="logo" width="16" height="16" aria-hidden="true"></canvas>
+        <span>Tick Lab</span>
+      </a>
+      <nav id="lessons" class="lessons" aria-label="Lessons"></nav>
+      <button id="aboutBtn" class="ghost">About</button>
+    </header>
+
+    <main class="layout">
+      <section id="info" class="info" aria-label="Lesson"></section>
+
+      <section class="stage" aria-label="Practice board">
+        <div class="board-area">
+          <div class="stage-inner" id="stageInner">
+          <div class="board-wrap">
+            <canvas id="board" aria-label="Game board"></canvas>
+            <div id="fx" class="fx" aria-hidden="true"></div>
+            <div id="hud" class="hud">
+              <div class="hud-chip"><span class="hud-label">Tick</span><span id="hudTick">0</span></div>
+              <div class="hud-chip timer" id="hudTimerChip"><span class="hud-label">Skilling timer</span><span id="hudTimer">–</span></div>
+            </div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+            <section id="replay" class="replay" hidden aria-label="Replay"></section>
+          </div>
+
+        <div id="cue" class="cue" aria-live="polite">
+          <span id="cueStep" class="cue-step">Ready</span>
+          <span id="cueText" class="cue-text">Click anything to start.</span>
+        </div>
+
+        <canvas id="tickbar" class="tickbar" aria-label="Tick timeline"></canvas>
+
+        <div class="controls">
+          <div class="seg" role="radiogroup" aria-label="Help level" id="levels">
+            <button role="radio" data-level="guided">Guided</button>
+            <button role="radio" data-level="light">Light</button>
+            <button role="radio" data-level="real">No help</button>
+          </div>
+          <details class="settings">
+            <summary>Settings</summary>
+            <div class="settings-pop">
+              <label class="field">Ping <input id="ping" type="number" min="0" max="300" step="5" value="40" /> ms</label>
+              <label class="toggle"><input id="metronome" type="checkbox" checked /> Metronome</label>
+              <label class="toggle"><input id="sound" type="checkbox" checked /> Sound</label>
+            </div>
+          </details>
+          <span class="spacer"></span>
+          <button id="pauseBtn">Pause &amp; replay</button>
+          <button id="resetBtn" class="ghost">Reset</button>
+        </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="inv-panel">
+          <div id="inventory" class="inventory" aria-label="Inventory"></div>
+          <button id="dropMode" class="drop-mode" aria-pressed="false" title="Shift-click also drops. Click an item, then another, to use one on the other.">Tap to drop: off</button>
+        </div>
+        <div class="stats" id="stats"></div>
+      </aside>
+    </main>
+
+    <dialog id="about" class="about">
+      <h2>About Tick Lab</h2>
+      <p>Tick Lab is a practice tool for tick manipulation: click rhythms that make gathering skills roll more often than they normally would. Mistakes here cost nothing, and the replay shows exactly which tick each click landed on and why a roll was lost.</p>
+      <h3>How the simulation works</h3>
+      <p>The server runs a 600ms tick. Each tick it processes your clicks first, then your turn: stalls ending, queued actions, interaction with objects, movement, then interaction with NPCs. A hidden skilling timer counts down every tick, and gathering only rolls on the tick it reaches zero.</p>
+      <p>Your clicks reach the server half your ping after you make them, and are processed on the next tick after they arrive. Set your real ping so the timing matches the game.</p>
+      <h3>Sources</h3>
+      <p>The tick model follows the OSRS Wiki's <em>Tick manipulation</em> page and the community guide <em>A Guide For Tick Manipulation Mechanics In Skilling</em> (data-dependent/osrs-guides), which documents each method tick by tick. All art and sound are original.</p>
+      <p class="small">Not endorsed by or affiliated with Jagex. Old School RuneScape is a trademark of Jagex Limited.</p>
+      <form method="dialog"><button class="primary">Close</button></form>
+    </dialog>
+
+  </body>
+</html>

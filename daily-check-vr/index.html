@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Check VR</title>
+<meta name="description" content="Daily Check VR: an HGV daily walkaround check trainer made in Unity 6. Find the defects on an articulated lorry, judge how serious they are and file your defect report. Desktop, browser and VR.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%23163C6E%27/%3E%3Cpath d=%27M4 8.5l2.5 2.5L12 5%27 fill=%27none%27 stroke=%27%23FFB01F%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap">
+<style>
+:root {
+  --bg: #F3F5F8; --surface: #FFFFFF; --ink: #121820; --muted: #4E5B69; --line: #DCE2E9;
+  --accent: #1D4F91; --amber: #FFB01F; --amber-ink: #8A5A00; --good: #1F8F57; --bad: #C0392B;
+  --hero: #0D1116; --hero-ink: #F4F6F8; --hero-muted: #A9B3BE;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1318; --surface: #161D24; --ink: #EDF1F5; --muted: #A9B3BE; --line: #26303A; --accent: #7DB0F0; --amber-ink: #FFC65A; --good: #3DBE7A; --bad: #F0533E;
+  }
+}
+:root[data-theme="dark"] { --bg: #0E1318; --surface: #161D24; --ink: #EDF1F5; --muted: #A9B3BE; --line: #26303A; --accent: #7DB0F0; --amber-ink: #FFC65A; --good: #3DBE7A; --bad: #F0533E; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 18px/1.6 'Inter', Arial, sans-serif; }
+img, video { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent); }
+h1, h2, h3 { line-height: 1.12; margin: 0 0 .5em; font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: clamp(26px, 4vw, 38px); }
+h3 { font-size: 20px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+section { padding: 64px 0; }
+.hero { background: radial-gradient(1200px 500px at 70% 0%, #1D4F91 0%, var(--hero) 62%); color: var(--hero-ink); padding: 72px 0 0; overflow: hidden; }
+.hero .eyebrow { color: var(--amber); font-weight: 800; letter-spacing: .2em; font-size: 14px; text-transform: uppercase; }
+.hero h1 { font-size: clamp(42px, 8vw, 86px); margin: 12px 0 16px; }
+.hero p.lead { color: var(--hero-muted); font-size: clamp(18px, 2.4vw, 23px); max-width: 700px; margin: 0 0 28px; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
+.btn { display: inline-block; padding: 14px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; }
+.btn.primary { background: var(--amber); color: #121820; }
+.btn.ghost { border: 2px solid #3A4654; color: var(--hero-ink); }
+.hero img { border-radius: 14px 14px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.45); }
+.grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.grid.three { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+.card img { border-radius: 10px; margin-bottom: 14px; }
+.card h3 small { display: block; font-size: 14px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+.stat b { display: block; font-size: 32px; color: var(--accent); line-height: 1.2; font-weight: 800; }
+.stat span { color: var(--muted); font-size: 15px; }
+.note { color: var(--muted); font-size: 15px; }
+.clip { width: 100%; border-radius: 14px; background: #000; }
+.two { display: grid; gap: 32px; grid-template-columns: 1fr; }
+@media (min-width: 860px) { .two { grid-template-columns: 1fr 1fr; align-items: center; } .two.narrow { grid-template-columns: 3fr 2fr; } }
+ul.points { padding-left: 1.1em; margin: 0; }
+ul.points li { margin-bottom: .6em; }
+.tag { display: inline-block; font-size: 13px; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-right: 6px; }
+.tag.d { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); }
+.tag.m { background: color-mix(in srgb, var(--amber) 22%, transparent); color: var(--amber-ink); }
+table { width: 100%; border-collapse: collapse; font-size: 16px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+footer { background: var(--hero); color: var(--hero-muted); padding: 32px 0; font-size: 15px; }
+footer a { color: var(--amber); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">HGV driver training · Unity 6 · desktop, browser and VR</div>
+    <h1>Daily Check VR</h1>
+    <p class="lead">A daily walkaround check trainer. Walk round an articulated lorry, inspect each DVSA check, judge every defect as minor or dangerous, and file your defect report.</p>
+    <div class="btns">
+      <a class="btn primary" href="play/">Try it in your browser</a>
+      <a class="btn ghost" href="#video">Watch a walkaround</a>
+    </div>
+    <img src="media/hero.jpg" alt="An articulated lorry with a blue tractor unit and a white curtainsider trailer in a depot yard at sunrise, with check markers on the wheels and steps" width="1600" height="900">
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap two">
+    <div>
+      <h2>Why a walkaround trainer</h2>
+      <p>Every HGV driver must check their vehicle before it goes on the road, and report any defect in writing. The DVSA guidance lists 27 things to check, from tyre tread to the fifth-wheel lock. Missing one can put an unroadworthy lorry on the road.</p>
+      <p>Practising on a real vehicle means taking it out of service, and real defects can't be planted on demand. Daily Check VR puts a lorry in a virtual yard with defects hidden on it, so drivers can practise the routine, and trainers can check they really look, as often as they like.</p>
+    </div>
+    <img src="media/title.jpg" alt="The title screen: Daily Check VR, with Training and Assessment buttons over the lorry in the yard" width="1600" height="900" style="border-radius:14px">
+  </div>
+</section>
+
+<section id="video" style="padding-top:0">
+  <div class="wrap">
+    <h2>A walkaround in Training mode</h2>
+    <video class="clip" src="media/gameplay.webm" poster="media/hero.jpg" controls muted playsinline preload="metadata" width="1600" height="900"></video>
+    <p class="note">Recorded from the real game. The driver checks the cab steps, climbs into the cab and finds a broken mirror, spots a brick trapped between the twin wheels, finds the fifth-wheel lock not in place and a dirty number plate, then files the report and decides the lorry must not be driven.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>At a glance</h2>
+    <div class="grid three">
+      <div class="card stat"><b>21 checks</b><span>Covering the DVSA's numbered checks, in the cab and all the way round the vehicle</span></div>
+      <div class="card stat"><b>28 defects</b><span>Each one modelled on the lorry, from a bald steer tyre to a load that's shifted</span></div>
+      <div class="card stat"><b>2 modes</b><span>Guided Training with feedback, and a scored Assessment with random defects</span></div>
+      <div class="card stat"><b>2 severities</b><span>Every defect judged as minor (report it) or dangerous (do not drive)</span></div>
+      <div class="card stat"><b>3 platforms</b><span>Desktop, browser, and VR headsets through OpenXR</span></div>
+      <div class="card stat"><b>0 asset files</b><span>The lorry, the yard, the interface and every sound are generated in code</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>How it plays</h2>
+    <div class="grid three">
+      <div class="card"><img src="media/check.jpg" alt="Inspecting the nearside tyres: the camera frames the wheels and a card lists what to look for, with No defect, Minor and Dangerous buttons" width="1600" height="900" loading="lazy"><h3>Inspect<small>Click a marker to look closely</small></h3><p class="note">The camera moves in on the part. A card lists what to look for, taken from the DVSA guidance. Look around and zoom in, then make your judgement.</p></div>
+      <div class="card"><img src="media/cab.jpg" alt="The view from the driver's seat: the windscreen, the nearside mirror and the height marker on the dashboard" width="1600" height="900" loading="lazy"><h3>Climb into the cab<small>Checks 1 to 8</small></h3><p class="note">Mirrors and glass, warning lights, air pressure, the height marker and the seatbelt are checked from the driver's seat. Test the horn and run the washers.</p></div>
+      <div class="card"><img src="media/report.jpg" alt="The driver's vehicle defect report, listing the defects found and asking whether the vehicle is safe to drive" width="1600" height="900" loading="lazy"><h3>File the report<small>Then get your score</small></h3><p class="note">Like the real defect report: vehicle, date, defects and their severity, or "nil defects". Then decide whether the lorry is safe to drive.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap two narrow">
+    <div>
+      <h2>Two modes</h2>
+      <ul class="points">
+        <li><b>Training</b> walks you round all 21 checks in the order drivers are taught: the cab steps, the cab, then clockwise round the vehicle. Four worked examples, two minor and two dangerous, and after each check you're told whether you were right, and why.</li>
+        <li><b>Assessment</b> plants five random defects (at least two dangerous, at least one minor) with no hints and no order. You're scored on defects found, severity, how much of the vehicle you covered, false reports, and whether you correctly decided the lorry could or couldn't be driven.</li>
+        <li><b>Review</b> shows the real defects on the vehicle afterwards, so every miss becomes a lesson.</li>
+      </ul>
+    </div>
+    <img src="media/results.jpg" alt="The results screen: score, defects found, severity, checks covered, and a breakdown of each defect with the reason it matters" width="1600" height="900" loading="lazy" style="border-radius:14px">
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Some of the defects</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Check</th><th>Defect</th><th>Severity</th></tr>
+        <tr><td>Tyres and wheels</td><td>Steer tyre worn below 1 mm; wheel nut indicator out of line; bulge or deep cut in a sidewall</td><td><span class="tag d">Dangerous</span></td></tr>
+        <tr><td>Tyres and wheels</td><td>Brick trapped between twin wheels; spray flap missing</td><td><span class="tag m">Minor</span></td></tr>
+        <tr><td>Coupling</td><td>Fifth-wheel dog clip not in place; landing legs not raised; red air line chafed and hissing</td><td><span class="tag d">Dangerous</span></td></tr>
+        <tr><td>In the cab</td><td>Windscreen crack in the wiper sweep; nearside mirror broken; ABS warning on; wrong height marker; frayed seatbelt</td><td><span class="tag d">Dangerous</span></td></tr>
+        <tr><td>In the cab</td><td>Screenwash empty: the wipers run dry</td><td><span class="tag m">Minor</span></td></tr>
+        <tr><td>Load and body</td><td>Curtain strap undone with the curtain bulging; sideguard hanging loose</td><td><span class="tag d">Dangerous</span></td></tr>
+        <tr><td>Lights and markings</td><td>Dirty rear number plate; missing side reflector; torn conspicuity tape; low AdBlue</td><td><span class="tag m">Minor</span></td></tr>
+      </table>
+    </div>
+    <p class="note">Severities are simplified for training. Drivers should always follow their operator's defect policy.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap two narrow">
+    <div>
+      <h2>How it's built</h2>
+      <p><b>Unity 6, C# and URP.</b> The scene is empty: the yard, the lorry, the interface and the sound are all created at runtime from code. The lorry is modelled from bevelled boxes, revolved shapes (tyres, rims, tanks, gauges) and tubes (air lines, straps), with generated textures for tread, checker plate, curtains, cracks and dirt.</p>
+      <p><b>One codebase, three ways to play.</b> On desktop and in the browser the camera glides in to each check, framing the part beside the card. In VR (OpenXR), you teleport to each check and point at the markers and the floating panel with a controller.</p>
+      <p><b>Content from the source.</b> The checks, what to look for and the defect wording follow the DVSA guidance <i>Carry out daily HGV walkaround checks</i>, under the Open Government Licence.</p>
+      <p><b>Tested headless.</b> The game can run without a window and save a screenshot of every check close-up, with every defect planted at once. That's how each of the 28 defects and 21 camera views were checked, and how the video above was rendered, frame by frame.</p>
+    </div>
+    <img src="media/fifth.jpg" alt="Close-up of the fifth-wheel release handle with the yellow dog clip hanging on its chain instead of locking the handle" width="1600" height="900" loading="lazy" style="border-radius:14px">
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Charlie Hall · <a href="https://www.linkedin.com/in/charliehall20">LinkedIn</a></p>
+    <p>Controls: click a marker to inspect it, right-drag to look around, WASD or click the ground to walk, scroll to zoom, Tab for the checklist, Esc to step back. In VR: point and pull the trigger, thumbstick to turn.</p>
+    <p>Contains public sector information licensed under the Open Government Licence v3.0. © 2026 Charlie Hall. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
