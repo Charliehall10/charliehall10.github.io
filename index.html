@@ -69,9 +69,11 @@ section { padding: 72px 0; }
 .intro { max-width: 720px; color: var(--muted); margin: 0 0 36px; font-size: 18px; }
 .projects { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
-.card > a.shot { display: block; aspect-ratio: 16 / 10; background: #0B0E12; overflow: hidden; }
-.card > a.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
-.card > a.shot:hover img { transform: scale(1.03); }
+.card > a.shot { display: block; position: relative; aspect-ratio: 16 / 10; background: #0B0E12; overflow: hidden; }
+.card > a.shot img, .card > a.shot video { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease, opacity .3s ease; }
+.card > a.shot video { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.card > a.shot.playing video { opacity: 1; }
+.card > a.shot:hover img, .card > a.shot:hover video { transform: scale(1.03); }
 .card img.pixel { image-rendering: pixelated; }
 .card .body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
 .card .meta { color: var(--muted); font-size: 14px; font-weight: 600; margin: 0 0 12px; }
@@ -160,7 +162,7 @@ footer .wrap { border-top: 1px solid #222A33; padding-top: 24px; }
     <div class="projects">
 
       <article class="card">
-        <a class="shot" href="https://charliehall10.github.io/specimen-hunter/"><img src="media/specimen-hunter.jpg" alt="Specimen Hunter: reels showing carp, bait tins and a catapult, with the free spins panel" loading="lazy" width="1200" height="750"></a>
+        <a class="shot" href="https://charliehall10.github.io/specimen-hunter/"><img src="media/specimen-hunter.jpg" alt="Specimen Hunter: reels showing carp, bait tins and a catapult, with the free spins panel" loading="lazy" width="1200" height="750"><video src="media/specimen-hunter-preview.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></a>
         <div class="body">
           <h3>Specimen Hunter</h3>
           <p class="meta">Browser game with its own game server · 2026</p>
@@ -177,7 +179,7 @@ footer .wrap { border-top: 1px solid #222A33; padding-top: 24px; }
       </article>
 
       <article class="card">
-        <a class="shot" href="daily-check-vr/"><img src="media/daily-check-vr.jpg" alt="Daily Check VR: a blue articulated lorry with a curtainsider trailer in a yard" loading="lazy" width="1200" height="750"></a>
+        <a class="shot" href="daily-check-vr/"><img src="media/daily-check-vr.jpg" alt="Daily Check VR: a blue articulated lorry with a curtainsider trailer in a yard" loading="lazy" width="1200" height="750"><video src="media/daily-check-vr-preview.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></a>
         <div class="body">
           <h3>Daily Check VR</h3>
           <p class="meta">HGV driver training · Unity 6 · desktop, browser and VR · 2026</p>
@@ -309,6 +311,36 @@ footer .wrap { border-top: 1px solid #222A33; padding-top: 24px; }
 <footer>
   <div class="wrap">© 2026 Charlie Hall · Tick Lab is a fan project and is not affiliated with Jagex. Old School RuneScape is a trademark of Jagex Limited.</div>
 </footer>
+
+<script>
+// Gameplay previews: resting on a card's screenshot for a second fades in its clip.
+if (matchMedia('(hover: hover)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('a.shot').forEach(shot => {
+    const video = shot.querySelector('video');
+    if (!video) return;
+    let timer, active = false;
+    const start = () => {
+      active = true;
+      video.preload = 'auto';  // start downloading during the wait
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        video.currentTime = 0;
+        video.play().then(() => { if (active) shot.classList.add('playing'); else video.pause(); }).catch(() => {});
+      }, 1000);
+    };
+    const stop = () => {
+      active = false;
+      clearTimeout(timer);
+      shot.classList.remove('playing');
+      video.pause();
+    };
+    shot.addEventListener('mouseenter', start);
+    shot.addEventListener('mouseleave', stop);
+    shot.addEventListener('focus', start);
+    shot.addEventListener('blur', stop);
+  });
+}
+</script>
 
 </body>
 </html>
